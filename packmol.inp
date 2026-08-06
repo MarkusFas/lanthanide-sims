@@ -1,0 +1,14 @@
+tolerance 2.0
+filetype xyz
+output lutatheru-solv.xyz
+pbc 45.0 45.0 45.0
+structure lutathera-opt.xyz
+  number 1
+  fixed 22.5 22.5 22.5 0. 0. 0. 
+  center
+end structure
+
+structure oxidane.xyz
+  number 2947
+  inside box 0. 0. 0. 45.0 45.0 45.0
+end structure

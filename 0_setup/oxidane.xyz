@@ -1,0 +1,5 @@
+3
+Properties=species:S:1:pos:R:3:occupancy:R:1:bfactor:R:1:residuenames:S:1:atomtypes:S:1:residuenumbers:I:1 pbc="F F F"
+O        0.00400000       0.00300000      -0.00200000       1.00000000       0.00000000 MOL O         1
+H        0.27600000       0.88800000       0.25200000       1.00000000       0.00000000 MOL H         1
+H        0.60400000      -0.23600000      -0.71300000       1.00000000       0.00000000 MOL H         1
