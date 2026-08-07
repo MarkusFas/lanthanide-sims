@@ -3,7 +3,7 @@ from ase.io import read, write
 import numpy as np
 import sys
 import subprocess
-from atomic_symbols import symbol_to_id
+from ase.data import atomic_masses, chemical_symbols
 from argparse import ArgumentParser
 
 def generate_packmol_input(box_lengths, num_water, mol_file="molecule.xyz", water_file="water.xyz", output_file="output.xyz", packmol_file="packmol.inp"):
@@ -91,9 +91,12 @@ if __name__ == "__main__":
     structures = read(packmol_output_file)
     structures.set_cell(box_lengths)
     structures.set_pbc(True)
-    
+    specorder = chemical_symbols[1:104]
+    masses = atomic_masses[1:104]
+    print(specorder)
     write(args.output_file, structures, format='extxyz')
-    write("lammps_indexing.data", structures, format='lammps-data')
+    write(args.output_file[:-3] + "data", structures, specorder=specorder,
+          masses=True, format='lammps-data')
     #write("lammps_indexing.xyz", structures, format='extxyz')
     print(f"Packmol run completed. Output written to {args.output_file}.")
     
