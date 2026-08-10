@@ -1,0 +1,82 @@
+<simulation verbosity='high' threading="True">
+  <output prefix='simulation'>
+    <properties stride='5' filename='out'> [ step, time{picosecond}, conserved, temperature{kelvin}, kinetic_cv, potential, volume, pressure_cv{bar}, cell_h{angstrom}, ensemble_temperature{kelvin} ] </properties>
+    <trajectory stride='100' filename='pos' format='ase'> positions </trajectory>
+    <trajectory stride='100' filename='frc' format='ase'> forces </trajectory>
+    <checkpoint stride='5000'/>
+  </output>
+  <total_steps>2000000</total_steps>
+  <prng>
+    <seed>51413</seed>
+  </prng>
+ 
+  <ffrotations name='pet-mad'>
+    <ffdirect name='pet-mad-base'>
+      <pes>metatomic</pes>
+      <parameters>
+        {template:structure.xyz,model:../model.pt,device:cuda,non_conservative:False}
+      </parameters>
+      <batch_size> 16 </batch_size>
+    </ffdirect>
+    <random>True</random>
+  </ffrotations>
+ 
+  <system_template>
+      <labels> [IDX, TEMP] </labels>
+      <instance> [ 0,  100] </instance>
+      <instance> [ 1,  117] </instance>
+      <instance> [ 2,  136] </instance>
+      <instance> [ 3,  158] </instance>
+      <instance> [ 4,  185] </instance>
+      <instance> [ 5,  215] </instance>
+      <instance> [ 6,  251] </instance>
+      <instance> [ 7,  293] </instance>
+      <instance> [ 8,  341] </instance>
+      <instance> [ 9,  398] </instance>
+      <instance> [10,  464] </instance>
+      <instance> [11,  541] </instance>
+      <instance> [12,  631] </instance>
+      <instance> [13,  736] </instance>
+      <instance> [14,  858] </instance>
+      <instance> [15, 1000] </instance>
+      <template>
+      <system prefix="REMD-IDX">
+        <initialize nbeads='1'>
+          <file mode='ase'> structure.xyz </file>
+          <velocities mode='thermal' units='kelvin'> TEMP </velocities>
+        </initialize>
+        <forces>
+          <force name='pet-mad' forcefield='pet-mad'/>
+        </forces>
+        <ensemble>
+          <temperature units='kelvin'> TEMP </temperature>
+        </ensemble>
+        <motion mode='dynamics'>
+          <dynamics mode='nvt'>
+            <thermostat mode='multi'>
+              <thermostat mode='gle'>
+                <A shape='(7,7)'>
+                  [   7.666249333563e-5,    9.796613316894e-4,    9.925189640001e-5,    1.437808251555e-4,    4.877566838321e-5,   -1.902126677917e-6,   -3.027245526038e-5,
+                      2.961984295336e-5,    4.037143870282e-3,   -2.933057203593e-3,    4.602611376634e-4,    3.359780773534e-4,   -7.931792774085e-5,    1.500631065759e-4,
+                      1.437575611583e-4,    2.933057203593e-3,    1.350033364778e-3,    1.270197507832e-3,   -4.552738913099e-5,    2.893780135305e-4,   -5.998610407138e-4,
+                     -1.470674083370e-4,   -4.602611376634e-4,   -1.270197507832e-3,    1.330828468671e-5,   -3.780809936260e-6,    3.450035997896e-5,    4.643287353670e-5,
+                     -4.880456733948e-5,   -3.359780773534e-4,    4.552738913099e-5,    3.780809936260e-6,    7.012838390166e-8,   -1.142457319866e-5,   -3.956743246091e-6,
+                      1.899859862745e-6,    7.931792774085e-5,   -2.893780135305e-4,   -3.450035997896e-5,    1.142457319866e-5,    2.238365865834e-8,    2.620756979183e-5,
+                      3.027368884545e-5,   -1.500631065759e-4,    5.998610407138e-4,   -4.643287353670e-5,    3.956743246091e-6,   -2.620756979183e-5,    1.579976506675e-12 ]
+                </A>
+              </thermostat>
+              <thermostat mode='svr'>
+                <tau units='femtosecond'> 0.5 </tau>
+              </thermostat>
+            </thermostat>
+            <timestep units='femtosecond'> 0.5 </timestep>
+          </dynamics>
+        </motion>
+      </system>
+    </template>
+  </system_template>
+ 
+  <smotion mode="remd">
+    <remd> <stride> 100 </stride> </remd>
+  </smotion>
+</simulation>
