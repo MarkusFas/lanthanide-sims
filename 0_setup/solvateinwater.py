@@ -1,10 +1,79 @@
-import ase 
+uuport ase 
 from ase.io import read, write
 import numpy as np
 import sys
 import subprocess
 from ase.data import atomic_masses, chemical_symbols
 from argparse import ArgumentParser
+
+from stoichiometry import solvate_molecule
+
+PACKMOL_HEADER = """\
+tolerance {tolerance}
+filetype xyz
+output {output_file}
+seed {seed}
+pbc {Lx} {Ly} {Lz}
+"""
+
+def write_packmol_input(
+    components: dict,
+    box_lengths,
+    work_dir: Path,
+    output_file: str = "solvated.xyz",
+    tolerance: float = 2.0,
+    seed: int = 12345,
+) -> Path:
+    """
+    components: {name: {"filepath": ..., "count": ...}, ...} -- any number
+    of entries, any mix of solvents/ions. Writes one structure block per
+    entry, all packed into the same box.
+    """
+    Lx, Ly, Lz = box_lengths
+
+    lines = [PACKMOL_HEADER.format(
+        tolerance=tolerance, output_file=output_file, seed=seed, Lx=Lx, Ly=Ly, Lz=Lz
+    )]
+    for name, spec in components.items():
+        count = int(spec["count"])
+        if count <= 0:
+            continue  # skip zero-count components rather than writing an empty block
+        lines.append(STRUCTURE_BLOCK.format(
+            filepath=spec["filepath"], count=count, Lx=Lx, Ly=Ly, Lz=Lz
+        ))
+
+    inp_path = work_dir / "packmol.inp"
+    inp_path.write_text("".join(lines))
+    return inp_path
+
+
+def run_packmol(components: dict, box_lengths, work_dir: str = ".") -> dict:
+    """Job: write packmol input from `components`, run packmol, return the packed structure."""
+    # resolve to an absolute path: jobflow may run each job in its own
+    # auto-created folder, so a relative work_dir here would not point to
+    # the same place once a downstream job (e.g. run_lammps) reads it back
+    work_dir = Path(work_dir).resolve()
+    work_dir.mkdir(parents=True, exist_ok=True)
+    output_file = "solvated.xyz"
+
+    inp_path = write_packmol_input(
+        components, box_lengths, work_dir, output_file=output_file
+    )
+
+    result = subprocess.run(
+        ["packmol"], stdin=inp_path.open(), cwd=work_dir,
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"packmol failed:\n{result.stdout}\n{result.stderr}")
+
+    return {
+        "packed_xyz": str(work_dir / output_file),
+        "box_lengths": tuple(box_lengths),
+        "components": components,
+    }
+
+
 
 def generate_packmol_input(box_lengths, num_water, mol_file="molecule.xyz", water_file="water.xyz", output_file="output.xyz", packmol_file="packmol.inp"):
     """
@@ -65,38 +134,15 @@ if __name__ == "__main__":
     parser.add_argument("water_file", help="XYZ file of a single water molecule")
     parser.add_argument("output_file", help="Output file for the solvated system")
     parser.add_argument("--box_length", type=float, default=20.0, help="Length of the cubic box in Angstroms (default: 30.0)")
+    parser.add_argument("--cation", default="Na", help="type of cation to dissolve")
+    parser.add_argument("--anion", default="Cl", help="type of anion to dissolve")
+    parser.add_argument("--cation-strength", type=float, default=0.0, help="concentration of cation to dissolve")
+    parser.add_argument("--anion-strength", type=float, default=0.0,
+                        help="concentration of anion to dissolve")
     args = parser.parse_args()
 
-    packmol_output_file = args.output_file
-    packmol_file = "packmol.inp"
-    rho = 0.997 #g/cm^3
-    molmass = 18.015 #g/mol
-    avo = 6.022E23
-    box_lengths = np.array([args.box_length, args.box_length, args.box_length])  # Box size in Angstroms
-    volume = box_lengths[0] * box_lengths[1] * box_lengths[2] * 1E-24 # cm^3 (box size given in Angstroms)
-    #sphere_volume = 4/3 * np.pi * (9**3) * 1E-24 # radius of 10 Angstroms
-    
-    # generate # of water molecules based on the volume of the box minus the volume of the sphere around the molecule
-    solute = read(args.solute_file)
-    solute_mass = np.sum(solute.get_masses())
-    N = int((avo *rho*volume - solute_mass)/molmass)
-    
-    center_molecule(args.solute_file, box_lengths)
-    print(box_lengths, N, args.solute_file, args.water_file, packmol_output_file, packmol_file)
-    generate_packmol_input(box_lengths, N, args.solute_file, args.water_file, packmol_output_file, packmol_file)
-    with open(packmol_file, "r") as f:
-        run = subprocess.run(["packmol"], stdin=f, capture_output=True, text=True)
-        print(run.stdout)
-    # save as lammps.data
-    structures = read(packmol_output_file)
-    structures.set_cell(box_lengths)
-    structures.set_pbc(True)
-    specorder = chemical_symbols[1:104]
-    masses = atomic_masses[1:104]
-    print(specorder)
-    write(args.output_file, structures, format='extxyz')
-    write(args.output_file[:-3] + "data", structures, specorder=specorder,
-          masses=True, format='lammps-data')
-    #write("lammps_indexing.xyz", structures, format='extxyz')
-    print(f"Packmol run completed. Output written to {args.output_file}.")
-    
+    components = solvate_molecule(
+            )
+
+    run_packmol()
+
