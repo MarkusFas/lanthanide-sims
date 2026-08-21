@@ -1,0 +1,25 @@
+tolerance 2.0
+filetype xyz
+output lutathera-solvated-ions.xyz
+seed 12345
+pbc 45.0 45.0 45.0
+
+structure /Users/markusfasching/EPFL/Work/project-solvation/cesare/i-solvate/initial_structures/oxidane.xyz
+  number 3031
+  inside box 0. 0. 0. 45.0 45.0 45.0
+end structure
+
+structure /Users/markusfasching/EPFL/Work/project-lutathera/0_setup/lutathera-opt.xyz
+  number 1
+  inside box 0. 0. 0. 45.0 45.0 45.0
+end structure
+
+structure /Users/markusfasching/EPFL/Work/project-solvation/cesare/i-solvate/initial_structures/Na.xyz
+  number 11
+  inside box 0. 0. 0. 45.0 45.0 45.0
+end structure
+
+structure /Users/markusfasching/EPFL/Work/project-solvation/cesare/i-solvate/initial_structures/Cl.xyz
+  number 11
+  inside box 0. 0. 0. 45.0 45.0 45.0
+end structure
