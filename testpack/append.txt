@@ -1,0 +1,9 @@
+
+    structures = read(packmol_output_file)
+    structures.set_cell(box_lengths)
+    structures.set_pbc(True)
+    
+    write(args.output_file, structures, format='extxyz')
+    write("lammps_indexing.data", structures, format='lammps-data')
+    #write("lammps_indexing.xyz", structures, format='extxyz')
+    print(f"Packmol run completed. Output written to {args.output_file}.")
