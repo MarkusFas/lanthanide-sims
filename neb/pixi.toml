@@ -13,3 +13,6 @@ matplotlib = ">=3.11.2,<4"
 eon = ">=3.2.1,<4"
 rgpycrumbs = ">=1.10.10,<2"
 chemparseplot = ">=1.11.0,<2"
+
+[pypi-dependencies]
+readcon = ">=0.14.9, <0.15"
