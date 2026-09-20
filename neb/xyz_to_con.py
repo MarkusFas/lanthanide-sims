@@ -8,6 +8,7 @@ import readcon
 
 def main(xyz_path, con_path):
     atoms = read(xyz_path)
+    atoms.set_cell([50,50,50])
     atoms.calc = None  # geometry only, no embedded forces
     readcon.ConFrame.from_ase(atoms).write_con(con_path)
 
