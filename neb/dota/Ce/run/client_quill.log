@@ -1,0 +1,30 @@
+eOn Client
+3.2.1 (b18342c)
+compiled Sun Sep 13 08:20:09 PM GMT 2026
+OS: linux
+Arch: x86_64
+Hostname: cosmopc24.intranet.epfl.ch
+PID: 125140
+DIR: /home/fasching/lanthanide-sims/neb/dota/Ce/run
+Loading parameter file config.ini
+[MetatomicPotential] Deterministic algorithms enabled (strict=false)
+[MetatomicPotential] Initializing...
+[MetatomicPotential] Loading model from '/ABS/PATH/TO/pet-mad-xs-v1.5.0.pt'
+[MetatomicPotential] Failed to load model: open file failed because of errno 2 on fopen: No such file or directory, file path: /ABS/PATH/TO/pet-mad-xs-v1.5.0.pt
+Exception raised from RAIIFile at /home/conda/feedstock_root/build_artifacts/libtorch_1781830576769/work/caffe2/serialize/file_adapter.cc:24 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xac (0x78d9ec8e932c in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x105 (0x78d9ec86a968 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libc10.so)
+frame #2: caffe2::serialize::FileAdapter::RAIIFile::RAIIFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x142 (0x78da1382f4f2 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/./libtorch_cpu.so)
+frame #3: caffe2::serialize::FileAdapter::FileAdapter(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x40 (0x78da1382f550 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/./libtorch_cpu.so)
+frame #4: caffe2::serialize::PyTorchStreamReader::PyTorchStreamReader(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x7a (0x78da1382ebea in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/./libtorch_cpu.so)
+frame #5: metatomic_torch::load_model_extensions(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::optional<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >) + 0x4b (0x78d9a7d19eab in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libmetatomic_torch.so)
+frame #6: metatomic_torch::load_atomistic_model(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::optional<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >) + 0x85 (0x78d9a7d1aa85 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libmetatomic_torch.so)
+frame #7: MetatomicPotential::MetatomicPotential(eonc::Parameters const&) + 0x5f5 (0x78da1e2d7215 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libmetatomic_pot.so)
+frame #8: eonc::helpers::makePotential(eonc::PotType, eonc::Parameters const&) + 0xac1 (0x78da1ec65a21 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libeonclib.so)
+frame #9: <unknown function> + 0x13f5b0 (0x78da1eb3f5b0 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libeonclib.so)
+frame #10: eonc::helpers::makeJob(std::unique_ptr<eonc::Parameters, std::default_delete<eonc::Parameters> >) + 0xb03 (0x78da1eb40173 in /home/fasching/lanthanide-sims/neb/.pixi/envs/default/bin/../lib/libeonclib.so)
+frame #11: <unknown function> + 0x17a57 (0x613cc80bca57 in eonclient)
+frame #12: <unknown function> + 0x1a8a6 (0x613cc80bf8a6 in eonclient)
+frame #13: <unknown function> + 0x2a575 (0x78da1e02a575 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #14: __libc_start_main + 0x88 (0x78da1e02a628 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #15: <unknown function> + 0x28f78 (0x613cc80cdf78 in eonclient)
