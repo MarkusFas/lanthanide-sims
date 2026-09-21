@@ -10,6 +10,7 @@ cd "$NEB_DIR"
 
 CONFIG_INI="config.ini"
 LIGANDS=(dota dotah lutathera pluvicto)
+LIGANDS=(dotah)
 
 for ligand in "${LIGANDS[@]}"; do
   for element_dir in "$ligand"/*/; do
