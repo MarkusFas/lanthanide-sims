@@ -1,0 +1,139 @@
+# default units are LENGTH=nm ENERGY=kJ/mol TIME=ps
+
+com: CENTER ATOMS=1,4,7,10
+c1: DISTANCE ATOMS=1,com COMPONENTS
+c2: DISTANCE ATOMS=4,com COMPONENTS
+c3: DISTANCE ATOMS=7,com COMPONENTS
+c4: DISTANCE ATOMS=10,com COMPONENTS
+
+nx12: CUSTOM ...
+    ARG=c1.x,c1.y,c1.z,c2.x,c2.y,c2.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ay*bz-az*by)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+ny12: CUSTOM ...
+    ARG=c1.x,c1.y,c1.z,c2.x,c2.y,c2.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(az*bx-ax*bz)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+nz12: CUSTOM ...
+    ARG=c1.x,c1.y,c1.z,c2.x,c2.y,c2.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ax*by-ay*bx)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+nx23: CUSTOM ...
+    ARG=c2.x,c2.y,c2.z,c3.x,c3.y,c3.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ay*bz-az*by)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+ny23: CUSTOM ...
+    ARG=c2.x,c2.y,c2.z,c3.x,c3.y,c3.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(az*bx-ax*bz)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+nz23: CUSTOM ...
+    ARG=c2.x,c2.y,c2.z,c3.x,c3.y,c3.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ax*by-ay*bx)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+nx34: CUSTOM ...
+    ARG=c3.x,c3.y,c3.z,c4.x,c4.y,c4.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ay*bz-az*by)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+ny34: CUSTOM ...
+    ARG=c3.x,c3.y,c3.z,c4.x,c4.y,c4.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(az*bx-ax*bz)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+nz34: CUSTOM ...
+    ARG=c3.x,c3.y,c3.z,c4.x,c4.y,c4.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ax*by-ay*bx)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+nx41: CUSTOM ...
+    ARG=c4.x,c4.y,c4.z,c1.x,c1.y,c1.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ay*bz-az*by)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+ny41: CUSTOM ...
+    ARG=c4.x,c4.y,c4.z,c1.x,c1.y,c1.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(az*bx-ax*bz)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+nz41: CUSTOM ...
+    ARG=c4.x,c4.y,c4.z,c1.x,c1.y,c1.z
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=(ax*by-ay*bx)/sqrt((ay*bz-az*by)*(ay*bz-az*by)+(az*bx-ax*bz)*(az*bx-ax*bz)+(ax*by-ay*bx)*(ax*by-ay*bx))
+    PERIODIC=NO
+...
+
+nx: CUSTOM ...
+    ARG=nx12,nx23,nx34,nx41
+    VAR=a,b,c,d
+    FUNC=(a+b+c+d)/4
+    PERIODIC=NO
+...
+
+ny: CUSTOM ...
+    ARG=ny12,ny23,ny34,ny41
+    VAR=a,b,c,d
+    FUNC=(a+b+c+d)/4
+    PERIODIC=NO
+...
+
+nz: CUSTOM ...
+    ARG=nz12,nz23,nz34,nz41
+    VAR=a,b,c,d
+    FUNC=(a+b+c+d)/4
+    PERIODIC=NO
+...
+
+dlacom: DISTANCE ATOMS=29,com
+dvec: DISTANCE ATOMS=29,com COMPONENTS
+
+z: CUSTOM ...
+    ARG=dvec.x,dvec.y,dvec.z,nx,ny,nz
+    VAR=ax,ay,az,bx,by,bz
+    FUNC=ax*bx+ay*by+az*bz
+    PERIODIC=NO
+...
+
+n: GROUP ATOMS=1,4,7,10
+h: GROUP ATOMS=55-1267:3,56-1268:3
+cn: COORDINATION GROUPA=n GROUPB=h ...
+    R_0=1.3 NN=8 MM=16 D_0=0.0 ...
+    NLIST NL_CUTOFF=3.0 NL_STRIDE=10
+
+mtd:   METAD ...
+    ARG=z
+    PACE=100
+    SIGMA=0.1
+    HEIGHT=10
+    FILE=plumed/HILLS
+    BIASFACTOR=20
+    TEMP=330
+...
+uwall: UPPER_WALLS ARG=z AT=0.6 KAPPA=10000 OFFSET=0
+
+PRINT ARG=z,fps.lp,fps.ld,mtd.*,dlacom,uwall.*,lwall.*,funnel.* STRIDE=100 FILE=plumed/COLVAR
+PRINT ARG=funnel.bias,lwall.bias,uwall.bias STRIDE=100 FILE=plumed/biases
+FLUSH STRIDE=100

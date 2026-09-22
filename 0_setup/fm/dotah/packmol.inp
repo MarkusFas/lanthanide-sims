@@ -1,0 +1,13 @@
+tolerance 2.0
+filetype xyz
+output solvated.xyz
+seed 12345
+pbc 23.0 23.0 23.0
+structure /Users/markusfasching/EPFL/Work/project-lutathera/molecules/dotah.xyz
+  number 1
+  inside box 0. 0. 0. 23.0 23.0 23.0
+end structure
+structure /Users/markusfasching/EPFL/Work/project-lutathera/0_setup/oxidane.xyz
+  number 405
+  inside box 0. 0. 0. 23.0 23.0 23.0
+end structure
